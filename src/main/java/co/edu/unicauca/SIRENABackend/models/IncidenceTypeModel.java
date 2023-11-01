@@ -11,9 +11,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * Clase que representa un modelo del tipo de insidencia en la aplicación.
- */
 @Data
 @Builder
 @NoArgsConstructor
@@ -22,18 +19,12 @@ import lombok.NoArgsConstructor;
 @Table(name = "incidences_types")
 public class IncidenceTypeModel {
 
-    /**
-     * Identificador único del tipo de insidencia.
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ins_type_int_id", unique = true)
     private Integer id;
 
-    /**
-     * Nombre de la insidencia.
-     */
-    @Column(name = "ins_type_name", nullable = false, length = 20)
+    @Column(name = "ins_type_name", nullable = false, length = 20, unique = true)
     private String name;
-    
+
 }

@@ -1,0 +1,30 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bd_reservasunicauca
+    username: root
+    password:
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    defer-datasource-initialization: true
+
+jwt:
+  secret-key: E7CC689E9AECEE00ABBC16D2E39A4A557073582D77C6B0901D9B06FE3100992
+  expitation: 43200000
+  refresh-token:
+    expitation: 302400000

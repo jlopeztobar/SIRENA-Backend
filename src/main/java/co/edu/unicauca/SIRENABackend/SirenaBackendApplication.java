@@ -9,5 +9,4 @@ public class SirenaBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SirenaBackendApplication.class, args);
 	}
-
 }
