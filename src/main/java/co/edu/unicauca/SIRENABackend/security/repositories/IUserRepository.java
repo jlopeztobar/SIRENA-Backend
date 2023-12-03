@@ -8,13 +8,11 @@ import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 
 public interface IUserRepository extends JpaRepository<UserModel, Integer> {
 
-    // @Query("SELECT id, username, firstName, lastName, email, role FROM
-    // UserModel")
-    // ArrayList<UserModel> findUserButNoPassword();
-
     Optional<UserModel> findByEmail(String prmEmail);
 
     Optional<UserModel> findByUsername(String prmUsername);
+
+    Optional<UserModel> findById(Integer prmId);
 
     boolean existsByUsername(String prmUsername);
 

@@ -1,9 +1,9 @@
 package co.edu.unicauca.SIRENABackend.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,15 +15,33 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.unicauca.SIRENABackend.models.BookingModel;
+import co.edu.unicauca.SIRENABackend.common.utils.BookingValidation;
+import co.edu.unicauca.SIRENABackend.dtos.request.BookingReq;
+import co.edu.unicauca.SIRENABackend.dtos.response.BookingRes;
+import co.edu.unicauca.SIRENABackend.security.dtos.response.UserRegisterRes;
 import co.edu.unicauca.SIRENABackend.services.BookingService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
+/**
+ * Controlador REST que maneja las operaciones relacionadas con las reservas
+ * (bookings).
+ */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/bookings")
-public class BookingController {
+@Tag(name = "Booking controller", description = "Endpoints para las reservas")
+public class BookingController extends BookingValidation {
 
-    @Autowired
-    private BookingService bookingService;
+    private final BookingService bookingService;
 
     /**
      * Crea una nueva booking.
@@ -32,10 +50,14 @@ public class BookingController {
      * @return Una respuesta HTTP con el objeto BookingModel creado y el código de
      *         estado 201 (CREATED).
      */
+    @Operation(summary = "Registra una reserva", description = "crea una reserva en el sistema.", responses = {
+            @ApiResponse(responseCode = "200", description = "reservas creada exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "No se creo la reservas", content = @Content(mediaType = "application/json"))
+    })
     @PostMapping()
-    public ResponseEntity<BookingModel> crearBooking(@RequestBody BookingModel bookingModel) {
-        BookingModel nuevaBooking = this.bookingService.crearBooking(bookingModel);
-        return new ResponseEntity<>(nuevaBooking, HttpStatus.CREATED);
+    public ResponseEntity<String> crearBooking(@RequestBody BookingReq bookingModel) {
+        bookingModel.setFechaSolicitud(LocalDateTime.now());
+        return this.bookingService.crearBooking(bookingModel);
     }
 
     /**
@@ -44,9 +66,13 @@ public class BookingController {
      * @return Una respuesta HTTP con una lista de objetos BookingModel y el código
      *         de estado 200 (OK).
      */
+    @Operation(summary = "Obtener todas las reservas", description = "Obtiene una lista de todas las reservas registrados en el sistema.", responses = {
+            @ApiResponse(responseCode = "200", description = "Reservas obtenidos exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "No se encontraron reservas", content = @Content(mediaType = "application/json"))
+    })
     @GetMapping()
-    public ResponseEntity<List<BookingModel>> obtenerTodasLasBookings() {
-        List<BookingModel> bookings = this.bookingService.obtenerTodasLasBookings();
+    public ResponseEntity<List<BookingRes>> obtenerTodasLasBookings() {
+        List<BookingRes> bookings = this.bookingService.obtenerTodasLasBookings();
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
 
@@ -59,9 +85,16 @@ public class BookingController {
      *         si la booking existe, o código de estado 404 (NOT FOUND) si no se
      *         encuentra.
      */
+    @Operation(summary = "Obtener una reserva", description = "Obtiene una reserva registrada por su id en el sistema.", responses = {
+            @ApiResponse(responseCode = "200", description = "Reserva obtenida exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "No se encontro la reserva", content = @Content(mediaType = "application/json"))
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID de la reserva a obtener", required = true, in = ParameterIn.PATH)
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<BookingModel> obtenerBookingPorId(@PathVariable Integer id) {
-        Optional<BookingModel> booking = this.bookingService.obtenerBookingPorId(id);
+    public ResponseEntity<BookingRes> obtenerBookingPorId(@PathVariable Integer id) {
+        Optional<BookingRes> booking = this.bookingService.obtenerBookingPorId(id);
         if (booking.isPresent()) {
             return new ResponseEntity<>(booking.get(), HttpStatus.OK);
         } else {
@@ -80,16 +113,22 @@ public class BookingController {
      *         si la booking existe, o código de estado 404 (NOT FOUND) si no se
      *         encuentra.
      */
+    @Operation(summary = "Actualiza una reserva", description = "Actualiza una reserva por su id en el sistema.", responses = {
+            @ApiResponse(responseCode = "200", description = "reserva actualizada exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "No se encontro la reserva", content = @Content(mediaType = "application/json"))
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID de la reserva a obtener", required = true, in = ParameterIn.PATH)
+    })
     @PutMapping("/{id}")
-    public ResponseEntity<BookingModel> actualizarBooking(@PathVariable Integer id,
-            @RequestBody BookingModel bookingActualizada) {
-        Optional<BookingModel> bookingExistente = this.bookingService.obtenerBookingPorId(id);
+    public ResponseEntity<String> actualizarBooking(@PathVariable Integer id,
+            @RequestBody BookingReq bookingActualizada) {
+
+        Optional<BookingRes> bookingExistente = this.bookingService.obtenerBookingPorId(id);
         if (bookingExistente.isPresent()) {
-            bookingActualizada.setId(id);
-            bookingService.crearBooking(bookingActualizada);
-            return new ResponseEntity<>(bookingActualizada, HttpStatus.OK);
+            return bookingService.actualizarBooking(id, bookingActualizada);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<String>("Reserva no encontrada",HttpStatus.NOT_FOUND);
         }
     }
 
@@ -101,9 +140,16 @@ public class BookingController {
      *         booking se eliminó con éxito,
      *         o código de estado 404 (NOT FOUND) si no se encuentra.
      */
+    @Operation(summary = "Elimina una reserva", description = "Elimina una reserva por su id en el sistema.", responses = {
+            @ApiResponse(responseCode = "200", description = "Reserva eliminada exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "No se encontro la reserva", content = @Content(mediaType = "application/json"))
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID de la reserva a eliminar", required = true, in = ParameterIn.PATH)
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarBooking(@PathVariable Integer id) {
-        Optional<BookingModel> bookingExistente = this.bookingService.obtenerBookingPorId(id);
+        Optional<BookingRes> bookingExistente = this.bookingService.obtenerBookingPorId(id);
         if (bookingExistente.isPresent()) {
             bookingService.eliminarBooking(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -111,4 +157,18 @@ public class BookingController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Operation(summary = "Obtener las reservas asociadas a un usuario", description = "Obtiene las reservas registradas por un usuario a través de su id.", responses = {
+            @ApiResponse(responseCode = "200", description = "Reservas obtenidas exitosamente", content = @Content(array = @ArraySchema(schema = @Schema(implementation = UserRegisterRes.class)), mediaType = "application/json")),
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID del usuario con las reservas a obtener", required = true, in = ParameterIn.PATH)
+    })
+    @GetMapping("/user/{UserID}")
+    public ResponseEntity<List<BookingRes>> getUserBookings(@PathVariable Integer UserID) {
+        List<BookingRes> bookings = this.bookingService.getUserBookings(UserID);
+        return new ResponseEntity<>(bookings, HttpStatus.OK);
+    }
+
+
 }

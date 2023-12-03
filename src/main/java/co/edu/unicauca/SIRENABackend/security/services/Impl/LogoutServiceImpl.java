@@ -13,6 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
+/**
+ *  Maneja la lógica de desconexión (logout) de usuarios.
+ */
 @Service
 @RequiredArgsConstructor
 public class LogoutServiceImpl implements LogoutHandler{

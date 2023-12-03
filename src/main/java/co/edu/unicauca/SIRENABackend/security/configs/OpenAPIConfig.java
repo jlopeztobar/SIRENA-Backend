@@ -9,6 +9,11 @@ import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 
+/**
+ * Configuración de OpenAPI para la documentación de la API de SIRENA Backend.
+ * Define información sobre la API, como título, versión, descripción y servidores,
+ * así como esquemas de seguridad para la autenticación con JWT (Bearer Token).
+ */
 @OpenAPIDefinition(
     info = @Info(
         contact = @Contact(

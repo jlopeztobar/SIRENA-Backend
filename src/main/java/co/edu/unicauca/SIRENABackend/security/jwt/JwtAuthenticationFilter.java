@@ -19,6 +19,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Filtro para la autenticación mediante JWT. Intercepta las solicitudes HTTP,
+ * verifica y procesa el token JWT incluido en el encabezado de autorización.
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -27,6 +31,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final ITokenRepository tokenRepository;
 
+    /**
+     * Filtra las solicitudes HTTP para autenticar mediante JWT.
+     *
+     * @param request     La solicitud HTTP.
+     * @param response    La respuesta HTTP.
+     * @param filterChain El objeto FilterChain para encadenar los filtros.
+     * @throws ServletException Si ocurre un error durante la filtración.
+     * @throws IOException      Si ocurre un error de E/S durante la filtración.
+     */
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain)

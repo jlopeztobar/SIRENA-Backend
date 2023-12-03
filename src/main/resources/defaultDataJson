@@ -1,0 +1,356 @@
+{
+    "data_buildings":
+    [
+        {
+        	"name":"Tulcan"
+        },
+        {
+        	"name":"Bicentenario"
+        },
+        {
+        	"name":"Santo Domingo"
+        }
+    ],
+    "data_faculties":
+    [
+        {
+        	"fac_name":"Electronica y telecomunicaciones",
+        	"fac_building_id":1
+        },
+        {
+        	"fac_name":"Ciencias Humanas y Sociales",
+        	"fac_building_id":2
+        },
+        {
+        	"fac_name":"Derecho, Ciencias Políticas y Sociales",
+        	"fac_building_id":3
+        }
+    ],
+    "data_programs":
+    [
+        {
+        	"name":"Doctorado en antropologia",
+        	"faculty":
+        	{
+        		"id": 2,
+        		"name": "Ciencias Humanas y Sociales",
+        		"building": {
+        			"id": 2,
+        			"name": "Bicentenario"
+        		}
+        	}
+        },
+        {
+        	"name":"Doctorado en ciencias humanas",
+        	"faculty":
+        	{
+        		"id": 2,
+        		"name": "Ciencias Humanas y Sociales",
+        		"building": {
+        			"id": 2,
+        			"name": "Bicentenario"
+        		}
+        	}
+        },
+        {
+        	"name":"Maestria en historia",
+        	"faculty":
+        	{
+        		"id": 2,
+        		"name": "Ciencias Humanas y Sociales",
+        		"building": {
+        			"id": 2,
+        			"name": "Bicentenario"
+        		}
+        	}
+        }
+    ],
+    "data_classrooms":
+    [
+        {
+        "name": "104",
+        "capacity": 30,
+        "state": "Habilitado",
+        "building": 	{
+        	"id": 2,
+        	"name": "Bicentenario"
+        },
+        "classroomType": 	{
+        		"id": 1,
+        		"name": "Salon"
+        	}
+        },
+        {
+        "name": "105",
+        "capacity": 30,
+        "state": "Habilitado",
+        "building": 	{
+        	"id": 2,
+        	"name": "Bicentenario"
+        },
+        "classroomType": 	{
+        		"id": 1,
+        		"name": "Salon"
+        	}
+        },
+        {
+        "name": "106",
+        "capacity": 30,
+        "state": "Habilitado",
+        "building": 	{
+        	"id": 2,
+        	"name": "Bicentenario"
+        },
+        "classroomType": 	{
+        		"id": 1,
+        		"name": "Salon"
+        	}
+        },
+        {
+        "name": "107",
+        "capacity": 30,
+        "state": "Habilitado",
+        "building": 	{
+        	"id": 2,
+        	"name": "Bicentenario"
+        },
+        "classroomType": 	{
+        		"id": 1,
+        		"name": "Salon"
+        	}
+        },
+        {
+        "name": "108",
+        "capacity": 30,
+        "state": "Habilitado",
+        "building": 	{
+        	"id": 2,
+        	"name": "Bicentenario"
+        },
+        "classroomType": 	{
+        		"id": 2,
+        		"name": "Auditorio"
+        	}
+        }
+    ],
+    "data_incidences":
+    [
+        {
+        	"ins_name":"Problema video Bean",
+        	"ins_teacher_name":"docenteTest",
+        	"ins_type":"Defecto"
+        },
+        {
+        	"ins_name":"Falta de pupitres",
+        	"ins_teacher_name":"coordinadorTest",
+        	"ins_type":"Inconveniente"
+        }
+    ],
+    "data_bookings":
+    [
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-16T11:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-16T12:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Pendiente",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 1,
+        	"rsv_usr_id":3,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":1
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-16T13:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-16T14:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Pendiente",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 1,
+        	"rsv_usr_id":2,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":2
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-16T15:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-16T16:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Pendiente",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 1,
+        	"rsv_usr_id":3,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":1
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-15T15:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-15T17:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Pendiente",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 1,
+        	"rsv_usr_id":2,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":2
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-18T15:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-18T16:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Finalizada",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 1,
+        	"rsv_usr_id":3,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":1
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-18T16:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-18T17:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Rechazada",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 1,
+        	"rsv_usr_id":3,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":1
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-19T16:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-19T17:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Rechazada",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 1,
+        	"rsv_usr_id":3,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":1
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-20T16:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-20T17:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Aceptada",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 1,
+        	"rsv_usr_id":3,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":1
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-20T18:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-20T19:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Aceptada",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 1,
+        	"rsv_usr_id":3,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":1
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-16T11:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-16T12:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Pendiente",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 2,
+        	"rsv_usr_id":3,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":1
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-16T13:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-16T14:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Pendiente",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 2,
+        	"rsv_usr_id":2,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":2
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-16T15:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-16T16:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Pendiente",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 2,
+        	"rsv_usr_id":3,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":1
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-17T15:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-17T17:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Pendiente",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 2,
+        	"rsv_usr_id":2,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":2
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-16T11:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-16T12:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Pendiente",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 3,
+        	"rsv_usr_id":3,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":1
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-16T13:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-16T14:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Pendiente",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 3,
+        	"rsv_usr_id":2,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":2
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-16T15:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-16T16:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Pendiente",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 3,
+        	"rsv_usr_id":3,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":1
+        },
+        {
+        	"rsv_fecha_reserva_inicio": "2023-12-17T15:00:00.000Z",
+        	"rsv_hora_fin": "2023-12-17T17:00:00.000Z",
+        	"rsv_num_estudiantes": 20,
+        	"rsv_estado": "Pendiente",
+        	"rsv_detalles": "Sin detalles",
+        	"rsv_incidencia":null,
+        	"rsv_cls_id": 3,
+        	"rsv_usr_id":2,
+        	"rsv_faculty_id":2,
+        	"rsv_program_id":2
+        }
+    ]
+}

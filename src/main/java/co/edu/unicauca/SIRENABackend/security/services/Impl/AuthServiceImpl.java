@@ -13,29 +13,28 @@ import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import co.edu.unicauca.SIRENABackend.security.common.enums.TokenTypeEnum;
 import co.edu.unicauca.SIRENABackend.security.dtos.request.UserLoginReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.request.UserRegisterReq;
 import co.edu.unicauca.SIRENABackend.security.dtos.response.AuthTokenRes;
 import co.edu.unicauca.SIRENABackend.security.jwt.JwtService;
 import co.edu.unicauca.SIRENABackend.security.models.RoleModel;
-import co.edu.unicauca.SIRENABackend.security.models.TokenModel;
 import co.edu.unicauca.SIRENABackend.security.models.UserModel;
 import co.edu.unicauca.SIRENABackend.security.repositories.IRoleRepository;
-import co.edu.unicauca.SIRENABackend.security.repositories.ITokenRepository;
 import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
 import co.edu.unicauca.SIRENABackend.security.services.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * proporciona la lógica para la autenticación y registro de usuarios.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
     private final IUserRepository userRepository;
     private final IRoleRepository roleRepository;
-    private final ITokenRepository tokenRepository;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -46,12 +45,15 @@ public class AuthServiceImpl implements AuthService {
                 .authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),
                         request.getPassword()));
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+        if (user.getStatus() == false) {
+            throw new RuntimeException("User is inactive");
+        }
 
-        var jwtToken = jwtService.getToken(user);
-        var refreshToken = jwtService.getRefreshToken(user);
-        revokeAllUserTokens(user);
-        saveUserToken(user, jwtToken);
-        saveUserToken(user, refreshToken);
+        var jwtToken = jwtService.getToken(user, user.getId());
+        var refreshToken = jwtService.getRefreshToken(user, user.getId());
+        jwtService.revokeAllUserTokens(user);
+        jwtService.saveUserToken(user, jwtToken);
+        jwtService.saveUserToken(user, refreshToken);
         return AuthTokenRes.builder()
                 .accesToken(jwtToken)
                 .refreshToken(refreshToken)
@@ -60,9 +62,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthTokenRes register(UserRegisterReq request) throws RuntimeException {
-        // if (userRepository.existsByUsername(request.getUsr_name())) {
-        // throw new RuntimeException("Username already exists");
-        // }
+        if (userRepository.existsByUsername(request.getUsr_name())) {
+            return null;
+        }
+        if (userRepository.existsByEmail(request.getUsr_email())) {
+            return null;
+        }
+
         RoleModel role_insert = roleRepository.findByName(request.getUsr_role()).orElseThrow();
         UserModel user = UserModel.builder()
                 .role(role_insert)
@@ -74,11 +80,11 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         var savedUser = userRepository.save(user);
-        var jwtToken = jwtService.getToken(user);
-        var refreshToken = jwtService.getRefreshToken(user);
+        var jwtToken = jwtService.getToken(user, savedUser.getId());
+        var refreshToken = jwtService.getRefreshToken(user, savedUser.getId());
 
-        saveUserToken(savedUser, jwtToken);
-        saveUserToken(savedUser, refreshToken);
+        jwtService.saveUserToken(savedUser, jwtToken);
+        jwtService.saveUserToken(savedUser, refreshToken);
 
         return AuthTokenRes.builder()
                 .accesToken(jwtToken)
@@ -103,13 +109,13 @@ public class AuthServiceImpl implements AuthService {
 
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             var user = this.userRepository.findByUsername(username).orElseThrow();
-            var isTokenValid = tokenRepository.findByToken(refreshToken)
+            var isTokenValid = jwtService.findByToken(refreshToken)
                     .map(token -> !token.isExpired() && !token.isRevoked())
                     .orElse(false);
             if (jwtService.isTokenValid(refreshToken, user) && isTokenValid) {
-                var accesToken = jwtService.getRefreshToken(user);
-                revokeAllUserTokens(user);
-                saveUserToken(user, accesToken);
+                var accesToken = jwtService.getRefreshToken(user, user.getId());
+                jwtService.revokeAllUserTokens(user);
+                jwtService.saveUserToken(user, accesToken);
                 var authResponse = AuthTokenRes.builder()
                         .accesToken(accesToken)
                         .refreshToken(refreshToken)
@@ -117,27 +123,5 @@ public class AuthServiceImpl implements AuthService {
                 new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
             }
         }
-    }
-
-    private void revokeAllUserTokens(UserModel prmUser) {
-        var validUserToken = tokenRepository.findAllValidTokensByUser(prmUser.getId());
-        if (validUserToken.isEmpty())
-            return;
-        validUserToken.forEach(Token -> {
-            Token.setExpired(true);
-            Token.setRevoked(true);
-        });
-        tokenRepository.saveAll(validUserToken);
-    }
-
-    private void saveUserToken(UserModel prmUser, String prmJwtToken) {
-        var token = TokenModel.builder()
-                .user(prmUser)
-                .token(prmJwtToken)
-                .tokenType(TokenTypeEnum.BEARER)
-                .expired(false)
-                .revoked(false)
-                .build();
-        tokenRepository.save(token);
     }
 }

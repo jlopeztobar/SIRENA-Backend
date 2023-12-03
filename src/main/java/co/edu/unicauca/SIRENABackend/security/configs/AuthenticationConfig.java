@@ -14,17 +14,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import co.edu.unicauca.SIRENABackend.security.repositories.IUserRepository;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Clase de configuración para la autenticación en la aplicación.
+ * Define la configuración del administrador de autenticación, el proveedor de autenticación,
+ * el codificador de contraseñas y el servicio de detalles de usuario.
+ */
 @Configuration
 @RequiredArgsConstructor
 public class AuthenticationConfig {
 
     private final IUserRepository userRepository;
 
+    // Configuración del administrador de autenticación
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    // Configuración del proveedor de autenticación
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -33,11 +40,13 @@ public class AuthenticationConfig {
         return authenticationProvider;
     }
 
+    // Configuración del codificador de contraseñas
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // Configuración del codificador de contraseñas
     @Bean
     public UserDetailsService userDetailService() {
         return username -> userRepository.findByUsername(username)
